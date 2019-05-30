@@ -1,0 +1,47 @@
+{
+    "variables":
+        {
+            "secretkey" :"",
+            "accesskey" :"",
+            "region":"us-east-2"
+        }
+
+    ,
+    "builders":[
+        {
+        "type": "amazon-ebs",
+        "ami_name": "Jenkins_Ami_Ub18.04",
+        "source_ami": "ami-0c55b159cbfafe1f0",
+        "region": "{{user `region`}}",
+        "secret_key": "{{user `secretkey`}}",
+        "access_key": "{{user `accesskey`}}",
+        "instance_type": "t2.micro",
+        "ssh_username": "ubuntu"
+
+        }
+
+    ],
+    "provisioners":[
+        {
+            "type": "shell",
+            "inline":[
+                "sudo apt update",
+                "sudo apt install openjdk-8-jdk -y",
+                "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64",
+                "echo $JAVA_HOME",
+                "wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -",
+                "sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'",
+                "sudo apt update",
+                "sudo apt install jenkins -y",
+                "sudo systemctl start jenkins",
+                "sudo cat /var/lib/jenkins/secrets/initialAdminPassword"
+            ]
+        }
+    ]
+
+
+
+}
+
+
+

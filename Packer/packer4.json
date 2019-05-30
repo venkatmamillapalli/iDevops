@@ -1,0 +1,34 @@
+{
+    "variables":
+        {
+            "secretkey" :"YO0y2sRgluhUCrV2veRvPT1PBSah/v4XUt5ZtQak",
+            "accesskey" :"AKIARQPYIDXTCFMFDNUV",
+            "region":"us-east-2"
+        },
+    "builders":[
+        {
+        "type": "amazon-ebs",
+        "ami_name": "gitxx {{isotime \"2019-01-02\"}}",
+        "source_ami": "ami-0c55b159cbfafe1f0",
+        "region": "{{user `region`}}",
+        "secret_key": "{{user `secretkey`}}",
+        "access_key": "{{user `accesskey`}}",
+        "instance_type": "t2.micro",
+        "ssh_username": "ubuntu"
+
+        }
+
+    ],
+    "provisioners":[
+        {
+            "type": "shell",
+            "inline":[
+                "sudo apt-get update",
+                "sudo apt-get install git -y"
+            ]
+        }
+    ]
+
+
+
+}

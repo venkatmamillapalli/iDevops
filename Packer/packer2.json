@@ -1,0 +1,49 @@
+{
+    "variables":[
+        {
+            "secretkey" :"YO0y2sRgluhUCrV2veRvPT1PBSah/v4XUt5ZtQak",
+            "accesskey" :"AKIARQPYIDXTCFMFDNUV",
+            "name" :"ubuntu"
+        }
+    ],
+    "builders":[
+        {
+        "type": "amazon-ebs",
+        "ami_name": "onlyubunt",
+        "source_ami": "ami-005bdb005fb00e791",
+        "region": "us-west-2",
+        "secret_key": "{{user `secretkey`}}",
+        "access_key": "{{user `accesskey`}}",
+        "instance_type": "t2.micro",
+        "ssh_username": "{{user `name`}}"
+
+        }
+
+    ],
+    "builders":[
+        {
+        "type": "amazon-ebs",
+        "ami_name": "ubuntuonly1604",
+        "source_ami": "ami-0c55b159cbfafe1f0",
+        "region":"us-east-2",
+        "secret_key": "{{user `secretkey`}}",
+        "access_key": "{{user `accesskey`}}",
+        "instance_type": "t2.micro",
+        "ssh_username": "ubuntu"
+
+        }
+
+    ],
+    "provisioners":[
+        {
+            "type": "shell",
+            "inline":[
+                "sudo apt update",
+                "sudo apt install apache2",
+                "sudo apt install tree -y"
+            ]
+        }
+    ]
+
+
+}
