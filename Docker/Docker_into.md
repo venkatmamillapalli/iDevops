@@ -38,15 +38,22 @@ docker image ls
 docker image build -t name.0
 
 docker container run --name venkat -d -p 80:8080 imagename.0
-docker container exec containerid
+docker exec -it  containerid /bin/bash
 docker  image inspect
 docker volume inspect
 docker volume rm 
 
 ```
+There is a docker exec command that can be used to connect to a container that is already running.
+
+Use docker ps to get the name of the existing container
+Use the command docker exec -it <container name> /bin/bash to get a bash shell in the container
+Generically, use docker exec -it <container name> <command> to execute whatever command you specify in the container.
 
 --env command used to change anything while running containers
 --arg command used  to change anything while building containers
+
+* CTRL+PQ command to exit container
 
 # Docker Container Backup
 
@@ -62,6 +69,7 @@ docker container run -v /container/folder/path:/destination/path -P -d imagename
 ```
 
 * if u mention Volume in dockerfile every time new volume is created while using -v commend in one volume every container data saved.
+# Bind mounts
 
 # Docker Drivers
 
