@@ -1,3 +1,17 @@
+# Docker Installation
+```
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+```
+## Post Steps to Docker Installation
+Create the docker group.
+```
+$ sudo groupadd docker
+```
+Add your user to the docker group.
+```
+$ sudo usermod -aG docker $USER
+```
 # Name space
 
 # C-Groups
