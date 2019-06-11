@@ -44,6 +44,11 @@ docker volume inspect
 docker volume rm 
 
 ```
+* Command to enter container while running/starting container
+```
+docker container run -it -P tomcat /bin/bash
+```
+
 There is a docker exec command that can be used to connect to a container that is already running.
 
 Use docker ps to get the name of the existing container

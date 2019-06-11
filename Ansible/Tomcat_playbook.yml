@@ -1,0 +1,8 @@
+---
+  - hosts  : webservers
+    become : true
+    tasks:
+      - name: copying war file
+        copy:
+          src: /opt/playbooks/webapp/target/webapp.war
+          dest: /opt/apache
