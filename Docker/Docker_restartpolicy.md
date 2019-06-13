@@ -1,5 +1,7 @@
 # Start containers automatically
 Estimated reading time: 3 minutes
+
+[Docker Restart](https://docs.docker.com/config/containers/start-containers-automatically/)
 Docker provides restart policies to control whether your containers start automatically when they exit, or when Docker restarts. Restart policies ensure that linked containers are started in the correct order. Docker recommends that you use restart policies, and avoid using process managers to start containers.
 
 Restart policies are different from the --live-restore flag of the dockerd command. Using --live-restore allows you to keep your containers running during a Docker upgrade, though networking and user input are interrupted.
