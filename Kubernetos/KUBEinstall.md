@@ -36,3 +36,11 @@ apt-mark hold kubelet kubeadm kubectl
 
 kubectl get node
 kubects get pods -h
+kubeadm join 192.168.0.8:6443 --token 9orej6.sgm1m1riyqltie0u --discovery-token-ca-cert-hashsha256:8606138f299a16f1495ac1005d5262ae117b1f6a2ceae9f5f05fa0f18d360396
+
+* if u lost the kubeadm join command
+
+
+kubeadm token create --print-join-command
+
+[taints](https://banzaicloud.com/blog/k8s-taints-tolerations-affinities/)
