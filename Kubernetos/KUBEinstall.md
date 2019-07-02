@@ -44,3 +44,6 @@ kubeadm join 192.168.0.8:6443 --token 9orej6.sgm1m1riyqltie0u --discovery-token-
 kubeadm token create --print-join-command
 
 [taints](https://banzaicloud.com/blog/k8s-taints-tolerations-affinities/)
+
+kubeadm join 192.168.0.10:6443 --token e6i49m.b44na5uve98tqp7p \
+    --discovery-token-ca-cert-hash sha256:834ec88e207921ca269f6281d91619914d3bf912b6d731a7c0f9340f14dcaa47

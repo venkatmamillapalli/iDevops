@@ -47,6 +47,18 @@ apt-mark hold kubelet kubeadm kubectl
 ```
 The kubelet is now restarting every few seconds, as it waits in a crashloop for kubeadm to tell it what to do.
 
+### Pod Network
+For flannel to work correctly, you must pass --pod-network-cidr=10.244.0.0/16 to kubeadm init.
+
+Set /proc/sys/net/bridge/bridge-nf-call-iptables to 1 by running sysctl net.bridge.bridge-nf-call-iptables=1 to pass bridged IPv4 traffic to iptables’ chains. This is a requirement for some CNI plugins to work, for more information please see here.
+
+Make sure that your firewall rules allow UDP ports 8285 and 8472 traffic for all hosts participating in the overlay network. see here .
+
+Note that flannel works on amd64, arm, arm64, ppc64le and s390x under Linux. Windows (amd64) is claimed as supported in v0.11.0 but the usage is undocumented.
+```
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/62e44c867a2846fefb68bd5f178daf4da3095ccb/Documentation/kube-flannel.yml
+
+```
 #### After kubeinit command
 * To make kubectl work for your non-root user, run these commands, which are also part of the kubeadm init output:
 ```
