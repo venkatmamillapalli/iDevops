@@ -13,7 +13,7 @@
 
 * then we need to install kubectl,kubeadm,kubelet
 
-nstalling kubeadm, kubelet and kubectl
+installing kubeadm, kubelet and kubectl
 You will install these packages on all of your machines:
 
 ### kubeadm

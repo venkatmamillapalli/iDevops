@@ -7,3 +7,8 @@ az aks create --resource-group foraks --name kube --node-count 2 --generate-ssh-
 #use the az aks install-cli command:
 sudo az aks install-cli
 #To configure kubectl to connect to your Kubernetes cluster, use the az aks get-credentials command. This command downloads credentials and configures the Kubernetes CLI to use them.
+az aks get-credentials --resource-group foraks --name kube
+##To configure kubectl to connect to your Kubernetes cluster, use the az aks get-credentials command. This command downloads credentials and configures the Kubernetes CLI to use them
+az aks get-credentials --resource-group foraks --name kubernetes
+##To verify the connection to your cluster, use the kubectl get command to return a list of the cluster nodes.
+kubectl get nodes
