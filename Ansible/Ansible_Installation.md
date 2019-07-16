@@ -26,7 +26,7 @@ sudo apt install ansible
 
 ```
 Your Ansible server now has all of the software required to administer your hosts.
-* Create more than one centos7 (/ubuntu) machines (2)..Create a user (ansibleuser) and password for applying
+*Create a user (ansibleuser) and password for applying
 ansible configurations on all the machines
 ```
 a.useradd ansibleuser
@@ -44,7 +44,7 @@ Switch to ansibleuser on machine 1
 a.su ansibleuser
 ```
 
-If your environment is must communicate with password based authontication
+Your environment is must communicate with password based authontication
 your environment is AWS please enable password based authontication.
 
 PasswordbasedAuthonticaion yes
