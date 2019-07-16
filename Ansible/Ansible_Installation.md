@@ -30,7 +30,6 @@ Installing Python
 sudo apt install python-pip
 python --version
 ```
-Your Ansible server now has all of the software required to administer your hosts.
 *Create a user (ansibleuser) and password for applying
 ansible configurations on all the machines
 ```
