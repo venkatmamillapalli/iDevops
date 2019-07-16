@@ -25,6 +25,11 @@ Following this update, you can install the Ansible software:
 sudo apt install ansible
 
 ```
+Installing Python
+```
+sudo apt install python-pip
+python --version
+```
 Your Ansible server now has all of the software required to administer your hosts.
 *Create a user (ansibleuser) and password for applying
 ansible configurations on all the machines
