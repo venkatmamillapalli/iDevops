@@ -1,0 +1,22 @@
+---
+- hosts : all
+  become: yes
+  tasks : 
+  - name : lamp installation
+    apt:
+      name: apache2
+      update_cache: yes
+      state: present
+  - name : restart apache2
+    service :
+      name: apache2
+      state: restarted
+  - name : Tomcat installation
+    apt:
+      name: tomcat8
+      update_cache: yes
+      state: present
+  - name : starting tomcat8
+    service :
+      name: tomcat8
+      state: started

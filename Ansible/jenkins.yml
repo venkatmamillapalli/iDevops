@@ -1,0 +1,42 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    java_path: JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
+  tasks:
+    - name: Update the software package repository
+      apt:
+        update_cache: yes
+    - name: Install dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - openjdk-8-jdk
+        - git
+        - maven
+    - name: setting java path
+      template:
+        src: /home/maven/environment.j2
+        dest: /etc/environment
+      command: source /etc/environment
+    - name: Download jenkins repo
+      command: sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+    - name: Import Jenkins CI key
+      apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins.io.key
+        state: present
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+        state: present
+    - name: Allow port 8080
+      shell: iptables -I INPUT -p tcp --dport 8080 -m state --state NEW,ESTABLISHED -j ACCEPT
+    - name: Start the server
+      service:
+        name: jenkins
+        state: started
+    - name: Get Admin Password
+      become: yes
+      become_method: sudo
+      command: cat /var/lib/jenkins/secrets/initialAdminPassword
