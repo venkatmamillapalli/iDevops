@@ -12,3 +12,6 @@ az aks get-credentials --resource-group foraks --name kube
 az aks get-credentials --resource-group foraks --name kubernetes
 ##To verify the connection to your cluster, use the kubectl get command to return a list of the cluster nodes.
 kubectl get nodes
+# to create secret
+kubectl create secret generic azure-secret --from-literal=azurestorageaccountname=foraks --from-literal=azurestorageaccountkey=iytDZzrLS2quo2HND2uPD5YsTeW/4+LCFaLXmuXVSYOfI9Zcj134jFCDkciIZuvwiw85Vmo8ay9/3iRAq2JfnQ==
+
