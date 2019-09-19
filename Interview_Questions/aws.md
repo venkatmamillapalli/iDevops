@@ -64,3 +64,21 @@ Requirements
 An HTTP/HTTPS load balancer.
 
 At least one healthy instance in each Availability Zone.
+
+## To enable duration-based sticky sessions for a load balancer using the AWS CLI
+
+Use the following create-lb-cookie-stickiness-policy command to create a load balancer-generated cookie stickiness policy with a cookie expiration period of 60 seconds:
+
+```
+aws elb set-load-balancer-policies-of-listener --load-balancer-name my-loadbalancer --load-balancer-port 443 --policy-names my-duration-cookie-policy
+```
+Use the following set-load-balancer-policies-of-listener command to enable session stickiness for the specified load balancer:
+```
+aws elb set-load-balancer-policies-of-listener --load-balancer-name my-loadbalancer --load-balancer-port 443 --policy-names my-duration-cookie-policy
+```
+## Elastic IP Addresses
+An Elastic IP address is a static IPv4 address designed for dynamic cloud computing. An Elastic IP address is associated with your AWS account. With an Elastic IP address, you can mask the failure of an instance or software by rapidly remapping the address to another instance in your account.
+
+An Elastic IP address is a public IPv4 address, which is reachable from the internet. If your instance does not have a public IPv4 address, you can associate an Elastic IP address with your instance to enable communication with the internet; for example, to connect to your instance from your local computer.
+
+We currently do not support Elastic IP addresses for IPv6.
