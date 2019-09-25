@@ -42,6 +42,7 @@ resource "aws_route_table" "tomroutetable" {
 }  
 resource "aws_route_table_association" "tomrouteassoc" {
   subnet_id      = "${aws_subnet.tompublic.id}"
+  subnet_id      = "${aws_subnet.tomprivate.id}"
   route_table_id = "${aws_route_table.tomroutetable.id}"
 }
 resource "aws_security_group" "tomsecgroup" {
