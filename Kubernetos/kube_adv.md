@@ -132,3 +132,6 @@ spec:
   targetCPUUtilizationPercentage: 20
 ```
 
+# Context
+
+A context is a group of access parameters. Each context contains a Kubernetes cluster, a user, and a namespace. The current context is the cluster that is currently the default for kubectl: all kubectl commands run against that cluster.

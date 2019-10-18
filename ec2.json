@@ -1,0 +1,191 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "This is cloudformation template to try parameters",
+    "Mappings" : {
+    "RegionMap" : {
+        "us-east-1"      :  {"64" : "ami-0cfee17793b08a293"} ,
+        "us-east-2"      : {"64" : "ami-0f93b5fd8f220e428"},
+        "us-west-1"      : {"64" : "ami-09eb5e8a83c7aa890"},
+        "us-west-2"      : {"64" : "ami-08692d171e3cf02d6"}
+      }
+    },
+    "Parameters":{
+        "mykey": {
+            "Description": "Choose a key value pair",
+            "Type": "AWS::EC2::KeyPair::KeyName",
+            "Default": "hello-iam"
+        },
+        "SubnetAaz": {
+            "Description": "Subnet1 AZ",
+            "Type": "AWS::EC2::AvailabilityZone::Name",
+            "Default" : "us-east-2a"
+        },
+        "SubnetBaz": {
+            "Description": "Subnet1 AZ",
+            "Type": "AWS::EC2::AvailabilityZone::Name",
+            "Default" : "us-east-2b"
+        },
+
+        
+        "instancetype": {
+            "Description": "This is instance type",
+            "Type": "String",
+            "Default": "t2.micro",
+            "AllowedValues": ["t2.micro","t2.small","t2.large"]
+        }
+
+    },
+    "Resources": {
+        "network": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "CidrBlock": "192.168.0.0/16",
+                "EnableDnsHostnames" : "true"
+        }
+    },
+        "igate": {
+            "Type": "AWS::EC2::InternetGateway",
+            "Properties": {
+                "Tags": [
+                    {
+                        "Key": "name",
+                        "Value": "igate"
+                    }
+                ]
+            }
+        },
+        "AttachGateway": {
+            "Type": "AWS::EC2::VPCGatewayAttachment",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "network"
+                },
+                "InternetGatewayId": {
+                    "Ref": "igate"
+                }
+            }
+        },
+        "routeTable": {
+            "Type": "AWS::EC2::RouteTable",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "network"
+                }
+            }
+        },
+        "route": {
+            "Type": "AWS::EC2::Route",
+            "Properties": {
+                "RouteTableId": {
+                    "Ref": "routeTable"
+                },
+                "DestinationCidrBlock": "0.0.0.0/0",
+                "GatewayId": {
+                    "Ref": "igate"
+                }
+            }
+        },
+        "SubnetA": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "AvailabilityZone": {"Ref": "SubnetAaz"},
+                "VpcId": {
+                    "Ref": "network"
+                },
+                "CidrBlock": "192.168.0.0/24"
+            }
+        },
+        "SubnetB": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "AvailabilityZone": {"Ref": "SubnetBaz"},
+                "VpcId": {
+                    "Ref": "network"
+                },
+                "CidrBlock": "192.168.1.0/24"
+            }
+        },
+        "routeTableAssocA": {
+          "Type": "AWS::EC2::SubnetRouteTableAssociation",
+          "Properties": {
+            "SubnetId": { "Ref": "SubnetA"},
+            "RouteTableId": {"Ref":"routeTable"}
+          }
+        },
+        "routeTableAssocB": {
+            "Type": "AWS::EC2::SubnetRouteTableAssociation",
+            "Properties": {
+              "SubnetId": { "Ref": "SubnetB"},
+              "RouteTableId": {"Ref":"routeTable"}
+            }
+          },
+        
+        "secgroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "securitygrop",
+                "SecurityGroupIngress": [
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "IpProtocol": "-1"
+                    }
+                ],
+                "VpcId": {
+                    "Ref": "network"
+                }
+            }
+        },
+    "lamp": {
+        "Type": "AWS::EC2::Instance",
+        "Properties": {
+            "KeyName": {"Ref":"mykey"},
+            "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "64"]},
+            "InstanceType": {"Ref":"instancetype"},
+            "Monitoring": "true",
+            "NetworkInterfaces": [ {
+                "AssociatePublicIpAddress": "true",
+                "DeviceIndex": "0",
+                "GroupSet": [{ "Ref" : "secgroup" }],
+                "SubnetId": { "Ref" : "SubnetB" }
+              } ],
+              "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "LAMP"
+                }
+            ],
+              "UserData": {
+                "Fn::Base64": {
+                    "Fn::Join": [
+                        "\n",
+                        [
+                            "#!/bin/bash",
+                            "sudo apt-get update",
+                            "sudo apt-get install apache2 -y",
+                            "sudo apt-get install php libapache2-mod-php  php-mysql -y",
+                            "echo '<?php phpinfo(); ?>' > /var/www/html/info.php",
+                            "sudo systemctl start apache2",
+                            "sudo apt-get install stress -y",
+                            "sudo apt-get install htop -y"
+                    ]
+                ]
+            }
+        }
+    }
+
+        }
+    },
+    
+  
+    
+      "Outputs" :{
+        "PublicIp" : {
+            "Value" : { "Fn::GetAtt" : [ "lamp", "PublicIp" ]},
+            "Description" : "Server's PublicIp Address"
+          }
+      }
+      
+}
+
+
+
